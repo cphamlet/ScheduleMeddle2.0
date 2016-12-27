@@ -28,7 +28,7 @@ $( "input#uploadedFilenameDecomp" ).change(function() {
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', './bin/uploadAndConvert.php', true);
+    xhr.open('POST', 'https://classedout.com/bin/uploadAndConvert.php', true);
     //alert(window.location.pathname);
     xhr.onload = function () {
       if (xhr.status === 200) {
@@ -46,7 +46,7 @@ $( "input#uploadedFilenameDecomp" ).change(function() {
 
   //This ajax request takes gives the file name to the server, which then executes the scripts 
   $.ajax({
-        url: "bin/index.php?name="+files[0].name,
+        url: "https://classedout.com/bin/index.php?name="+files[0].name,
         success: function (result) {
             calendarItems = result;
         },
