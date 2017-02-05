@@ -1,0 +1,343 @@
+<html>
+
+<head>
+<link rel='stylesheet' href='lib/fullcalendar.css' />
+<script src='lib/jquery-3.1.1.min.js'></script>
+<script src='lib/moment.js'></script>
+<link rel='stylesheet' href='lib/css/foundation.min.css' />
+<link rel='stylesheet' href='lib/css/app.css' />
+<script src='lib/fullcalendar.js'></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300" rel="stylesheet">
+<style>
+.fc-time-grid .fc-slats td {
+height: 2.8em !important;
+}
+
+
+
+#calendar {
+  margin-left: 1em;
+  margin-right:1em;
+}
+h2 {
+  font-family: 'Roboto', helvetica, sans-serif;
+  font-weight: 100;
+  font-size: 2.2em;
+}
+
+span{
+  font-family: 'Roboto', helvetica, sans-serif;
+}
+
+html{
+  margin-top:4em;
+  margin-left:3em;
+  margin-right:3em;
+    -webkit-animation: fadein 2.5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2.5s; /* Firefox < 16 */
+        -ms-animation: fadein 2.5s; /* Internet Explorer */
+         -o-animation: fadein 2.5s; /* Opera < 12.1 */
+            animation: fadein 2.5s;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+</style>
+
+</head>
+<body>
+
+<h2>COMP 110 Schedule Meddler</h2>
+  <label>
+    What is your first and last name?
+    <textarea id = "name" placeholder="e.g. John Smith"></textarea>
+  </label>
+ <label>
+    What is your onyen?
+    <textarea id = "onyen" placeholder="onyen"></textarea>
+  </label>
+  <label>
+    What is your assigned amount of hours? 
+    <textarea id = "hours" placeholder="5-10"></textarea>
+  </label>
+<fieldset class="large-6 columns">
+      <legend>Gender</legend>
+      <input type="radio" name="gender-choice-1" value="M" id="Male" required><label for="Male">Male</label>
+      <input type="radio" name="gender-choice-1" value="F" id="Female"><label for="Female">Female</label>
+    </fieldset>
+
+
+<fieldset class="large-6 columns">
+      <legend>Level</legend>
+      <input type="radio" name="level-choice-1" value="1" id="401" required><label for="401">In 401</label>
+      <input type="radio" name="level-choice-1" value="2" id="410/411"><label for="410/411">In 410/411</label>
+      <input type="radio" name="level-choice-1" value="3" id="In Major"><label for="In Major">In Major</label>
+    </fieldset>
+
+
+
+<div id='hours'></div>
+<div id='calendar'></div>
+<a href="#features" id ="getHours" class="button">Generate CSV</a>
+
+<pre>
+Name:,FILL IN NAME,,,,,,
+Gender (enter M or F):,FILL IN GENDER,,,,,,
+Capacity:,9,,,,,,
+Level (1 - in 401; 2 - in 410/411; 3 - in major),LEVEL HERE,,,,,,
+,0. Sun,1. Mon,2. Tue,3. Weds,4. Thu,5. Fri,6. Sat
+0,0,0,0,0,0,0,0
+1,0,0,0,0,0,0,0
+2,0,0,0,0,0,0,0
+3,0,0,0,0,0,0,0
+4,0,0,0,0,0,0,0
+5,0,0,0,0,0,0,0
+6,0,0,0,0,0,0,0
+7,0,0,0,0,0,0,0
+8,0,0,0,0,0,0,0
+9,0,0,1,0,1,0,0
+10,0,0,1,0,1,0,0
+11,1,0,0,0,1,0,1
+12,1,1,0,1,1,1,1
+13,1,1,0,1,0,1,1
+14,1,0,0,0,0,0,1
+15,1,0,0,0,0,0,1
+16,0,0,0,0,0,0,0
+17,0,1,0,1,0,0,0
+18,0,1,1,0,0,1,0
+19,0,1,1,0,1,1,0
+20,0,1,1,0,1,1,0
+21,0,1,1,0,1,1,0
+22,0,0,0,0,0,0,0
+23,0,0,0,0,0,0,0
+</pre>
+
+
+
+<!-- <script src="csv.js" type="text/javascript"></script> -->
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    var calendar = $("#calendar");
+    var hours = new Array(7);
+    for (var i = 0; i < 7; i++) {
+          hours[i] = new Array(24);
+    }
+
+    for(var i = 0; i<7; i++){
+      for(var j = 0; j<24; j++){
+        hours[i][j] = 0;
+      }
+    }
+    
+    var calchours = function(start, end, revertFunc, event) {
+      var newstartDate = new Date(start);
+        var newendDate = new Date(end);
+
+      
+        var title = "Office Hours";
+        var eventData;
+        if (title) {
+          eventData = {
+            id: newstartDate,
+            oldEnd: newendDate,
+            title: title,
+            start: start,
+            end: end
+          };
+          $('#calendar').fullCalendar('renderEvent', eventData, true);
+          $('#calendar').fullCalendar('unselect');
+          if(newendDate.getDay() - newstartDate.getDay() > 0){
+            //removes the event based on start time if selected multiple days
+              calendar.fullCalendar('removeEvents', eventData.id);
+            return;
+            //return ends function early, prevents execution if more than one day is selected
+          }
+          var startDate = new Date(start);
+          var endDate = new Date(end);
+          var startHour = startDate.getHours();
+          var endHour = endDate.getHours();
+          
+            for(var i = startHour+5; i < endHour+5; i++){
+              hours[startDate.getDay()][i] = 1;
+            }
+        
+        
+      }
+    }
+
+    var resize = function(event, delta, revertFunc, jsEvent, ui, view){
+      
+        var newstartDate = new Date(event.start);
+        var newendDate = new Date(event.end);
+       
+        //Plus 5 for timezone, - 9 for array usage
+        if(delta.hours()>0){
+          for(var i = newstartDate.getHours()+5; i < newendDate.getHours()+5; i++){
+              hours[newstartDate.getDay()][i] = 1;
+            }
+        }else if (delta.hours()<0){
+          for(var i = newendDate.getHours()+5; i < (-delta.hours())+(newendDate.getHours()+5); i++){
+              hours[newstartDate.getDay()][i] = 0;
+            }
+        }
+        event.oldEnd = newendDate;
+     
+        
+    }
+
+    var moveEvent = function(event, delta, revertFunc, jsEvent, ui, view){
+
+     
+
+        for(var i = event.id.getHours()+5; i < event.oldEnd.getHours()+5; i++){
+              hours[event.id.getDay()][i] = 0;
+        }
+
+        event.id = new Date(event.start);
+        event.oldEnd = new Date(event.end);
+        for(var i = event.id.getHours()+5; i < event.oldEnd.getHours()+5; i++){
+              hours[event.id.getDay()][i] = 1;
+        }
+
+    }
+
+    var deleteEvent = function(event, jsEvent, view) {
+            event.backgroundColor = "#F00";
+            calendar.fullCalendar('removeEvents', event._id);
+
+             var startDate = new Date(event.start);
+              var endDate = new Date(event.end);
+
+            for(var i = startDate.getHours()+5; i < endDate.getHours()+5; i++){
+             
+              hours[startDate.getDay()][i] = 0;
+            }
+    };
+
+//sets up the calendar
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+         center: 'title',
+        right: 'agendaWeek'
+      },
+      defaultView: "agendaWeek",
+      selectable: true,
+      selectHelper: true,
+      allDaySlot: false,
+      minTime: "09:00:00",
+      maxTime: "21:00:00",
+      eventResize: resize,
+      eventDrop: moveEvent,
+      eventConstraint: {
+        start: '10:00',
+        end:   '20:00'
+      },
+      slotDuration: {
+        hours: 1
+      },
+      eventBackgroundColor:  "#000",
+      eventBorderColor: "#000",
+      eventClick: deleteEvent,
+      select: calchours,
+      editable: true,
+      eventLimit: true // allow "more" link when too many events
+     
+    });
+//get rid of default title
+    $(".fc-center").html("");
+    $('#calendar').fullCalendar('option', 'height', 755);
+    
+
+
+
+  //The below code executes when you click "generate csv"
+  $('#getHours').click(function(){
+    var gender ="FILL IN GENDER";
+    var level = "FILL IN LEVEL";
+    $("input[name*=gender-choice-]:checked").each(function() {
+         gender = $(this).val();
+      });
+    $("input[name*=level-choice-]:checked").each(function() {
+         level = $(this).val();
+
+      });
+    var name = $("textarea#name").val();
+    var hoursCapacity = $("textarea#hours").val();
+      //CSV Generation
+      var pom = document.createElement('a');
+      var text = "Name:,"+name+",,,,,,\n";
+
+      text = text + "Gender (enter M or F):,"+ gender +",,,,,,\n";
+      text = text + "Capacity:," + hoursCapacity + ",,,,,,\n";
+      text = text + "Level (1 - in 401; 2 - in 410/411; 3 - in major),"+level+",,,,,,\n";
+      text = text + ",0. Sun,1. Mon,2. Tue,3. Weds,4. Thu,5. Fri,6. Sat\n";
+
+      for(var j = 0; j<24; j++){
+        text = text + j;
+          for( var i = 0; i<7; i++){
+            text = text + "," + hours[i][j];
+          }
+          text = text + "\n";
+      }
+      $("pre").html(text);
+
+      var filename = $("textarea#onyen").val();
+      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
+      pom.setAttribute('download', filename);
+  //simulates a click to download the file
+      if (document.createEvent) {
+          var event = document.createEvent('MouseEvents');
+          //uncomment these to download CSV!
+   //       event.initEvent('click', true, true);
+   //       pom.dispatchEvent(event);
+      }
+      else {
+          pom.click();
+      }
+
+
+
+
+  });
+
+
+});
+
+
+</script>
+
+
+<script src ="lib/js/vendor/foundation.js"></script>
+<script src ="lib/js/vendor/what-input.js"></script>
+<script src ="lib/js/app.js"></script>
+</body>
+
+
+</html>
