@@ -209,7 +209,7 @@ $(document).ready(function() {
     if($("textarea#onyen").val().length > 2){
       var temponyen = $("textarea#onyen").val();
       //Post request to retrieve github csvs given the username 
-      $.post( "getSched.php", { onyen: temponyen}, function(){
+      $.post( 'https://www.classedout.com/comp110beta/getSched.php', { onyen: temponyen}, function(){
       })//data is the returned csv!
         .done(function( data ) {
           $("#calendar").fullCalendar('removeEvents');
