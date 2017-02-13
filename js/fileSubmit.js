@@ -43,6 +43,15 @@ $( "input#uploadedFilenameDecomp" ).change(function() {
     // File(s) uploaded.
     //alert("uploaded");
       uploadButton.innerHTML = 'Upload';
+	$.ajax({
+        url: "bin/index.php?name="+files[0].name,
+        success: function (result) {
+            calendarItems = result;
+            calendarItems = result;
+        },
+        async: false
+   	});
+	handleAuthClick("hello");
        } else {
         alert('An error occurred!');
        }
@@ -52,19 +61,7 @@ $( "input#uploadedFilenameDecomp" ).change(function() {
 
     
 
-  //This ajax request takes gives the file name to the server, which then executes the scripts 
-  $.ajax({
-        url: "bin/index.php?name="+files[0].name,
-        success: function (result) {
-            calendarItems = result;
-        },
-        async: false
-    });
-    var event = "hello";
-   // alert(calendarItems);
-
-    handleAuthClick(event);
-    
+  //This ajax request takes gives the file name to the server, which then executes the scripts    
 	
 
   });
