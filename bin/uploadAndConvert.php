@@ -10,13 +10,14 @@ if ($_FILES["uploadedFilename"]["size"] > 5000000) {
     $uploadOk = 0;
 }
 $filename = $_FILES['uploadedFilename']['name'];
+$filename = htmlspecialchars($filename);
 $pathAndFile = "./uploads/".$filename;
 
 if ($uploadOk == 0) {
     echo "Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
-} else if ( move_uploaded_file ($_FILES['uploadedFilename'] ['tmp_name'], 
-      "./uploads/{$_FILES['uploadedFilename'] ['name']}")  )
+} else if ( move_uploaded_file (htmlspecialchars($_FILES['uploadedFilename'] ['tmp_name']), 
+      $pathAndFile)  )
       {  print '<p> The file has been successfully uploaded </p>';
        }
 else
