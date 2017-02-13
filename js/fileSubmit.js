@@ -9,6 +9,14 @@
     var fileName = document.getElementById('fileName');
     var fileNameDecomp = document.getElementById('fileNameDecomp');
     var uploadStatus = document.getElementById('uploadStatus');
+//      $.ajax({
+//        url: "bin/count.php?name=addOne",
+//        success: function (result) {
+           // calendarItems = result;
+	    //  alert(result);
+//        },
+//        async: false
+//    });
 
 $( "#uploadedFilename" ).change(function() {
     var files = fileSelect.files;
@@ -57,7 +65,7 @@ $( "input#uploadedFilenameDecomp" ).change(function() {
 
     handleAuthClick(event);
     
-
+	
 
   });
 
