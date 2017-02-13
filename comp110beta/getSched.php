@@ -7,7 +7,7 @@ echo "right";
 // Set some options - we are passing in a useragent too here
 curl_setopt($curl,CURLOPT_USERAGENT, 'cphamlet');
 //gives the access token to the GitHub API for authorization
- curl_setopt($curl,CURLOPT_URL,'https://api.github.com/repos/comp110/KarenBot/contents/data/spring-17/staff/'.$onyen.'.csv?access_token=72bb9ee6c66545e82644e5cfb3e977c59c8be365');
+ curl_setopt($curl,CURLOPT_URL,'https://api.github.com/repos/comp110/KarenBot/contents/data/spring-17/staff/'.$onyen.'.csv?access_token=ENTER TOKEN HERE');
  //return curl_exec value as a string instead of output
  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
