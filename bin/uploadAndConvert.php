@@ -10,6 +10,7 @@ if ($_FILES["uploadedFilename"]["size"] > 5000000) {
     $uploadOk = 0;
 }
 $filename = $_FILES['uploadedFilename']['name'];
+$filename = htmlspecialchars($filename);
 $pathAndFile = "./uploads/".$filename;
 
 if ($uploadOk == 0) {
