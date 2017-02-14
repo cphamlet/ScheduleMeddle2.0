@@ -218,6 +218,7 @@ $(document).ready(function() {
     $("input#3").prop("checked", false);
     $("input#M").prop("checked", false);
     $("input#F").prop("checked", false);
+    $("input#hours").val("");
     if($("input#onyen").val().length > 2){
       var temponyen = $("input#onyen").val();
       //Post request to retrieve github csvs given the username 

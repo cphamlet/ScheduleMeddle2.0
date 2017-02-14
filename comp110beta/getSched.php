@@ -3,7 +3,6 @@ $onyen =  htmlspecialchars($_POST["onyen"]);
 // Get cURL resource
 $curl = curl_init();
 
-echo "right";
 // Set some options - we are passing in a useragent too here
 curl_setopt($curl,CURLOPT_USERAGENT, 'cphamlet');
 //gives the access token to the GitHub API for authorization
