@@ -2,8 +2,6 @@
 
 $uploadOk = 1;
 
-
-
 // Check file size greater than 5 Mb
 if ($_FILES["uploadedFilename"]["size"] > 5000000) {
     echo "Sorry, your file is too large.";
@@ -18,7 +16,11 @@ if ($uploadOk == 0) {
 // if everything is ok, try to upload file
 } else if ( move_uploaded_file (htmlspecialchars($_FILES['uploadedFilename'] ['tmp_name']), 
       $pathAndFile)  )
-      {  print '<p> The file has been successfully uploaded </p>';
+      {
+	  exec('java -jar scheduler.jar '.$pathAndFile);
+	  $fileContents = file_get_contents('outFile.txt');
+	  echo $fileContents;
+	  print '<p> The file has been successfully uploaded </p>';
        }
 else
       {   // error handling code goes here
